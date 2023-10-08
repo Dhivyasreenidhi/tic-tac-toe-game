@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe</title>
+    <style>
+body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+             /* Background color for the entire page */
+            margin: 0;
+            padding: 0;
+            background-image: url("https://www.jimkwik.com/wp-content/uploads/2022/11/6307b61dd91f66cc8182e686_technology-is-changing-your-brain-and-that-is-bad-news.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        h1 {
+            font-size: 36px;
+            margin-top: 20px;
+            color: #16e2f5;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            margin: 20px auto;
+            width: 300px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            font-size: 36px;
+            text-align: center;
+            border: 2px solid #333;
+            background-color: #ddd; /* Background color for cells */
+            color: #333; /* Text color for cells */
+            cursor: pointer;
+        }
+
+        .cell:hover {
+            background-color:rgb(116, 245, 198); /* Hover background color for cells */
+        }
+
+        #status {
+            font-size: 24px;
+            margin-top: 20px;
+            color: #16e2f5; /* Text color for game status */
+        }
+
+        #reset-button {
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #16e2f5; /* Background color for the reset button */
+            color: rgb(19, 18, 18); /* Text color for the reset button */
+            border-radius:50px;
+            cursor: pointer;
+        }
+
+        #reset-button:hover {
+            background-color: #90dafa; /* Hover background color for the reset button */
+        }
+    </style>
+</head>
+<body>
+    <h1>Tic-Tac-Toe</h1>
+    <div class="board" id="board">
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+        <div class="cell" onclick="makeMove(this)"></div>
+    </div>
+    <p id="status"></p>
+    
+    <button id="reset-button" onclick="resetGame()">Reset</button>
+
+    <script>
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', ''];
+        let gameOver = false;
+
+        function checkWinner() {
+            const winCombinations = [
+                [0, 1, 2],
+                [3, 4, 5],
+                [6, 7, 8],
+                [0, 3, 6],
+                [1, 4, 7],
+                [2, 5, 8],
+                [0, 4, 8],
+                [2, 4, 6]
+            ];
+
+            for (let combination of winCombinations) {
+                const [a, b, c] = combination;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    document.getElementById('status').innerText = `${currentPlayer} wins!`;
+                    gameOver = true;
+                }
+            }
+
+            if (!gameBoard.includes('') && !gameOver) {
+                document.getElementById('status').innerText = 'It\'s a draw!';
+                gameOver = true;
+            }
+        }
+
+        function makeMove(cell) {
+            if (!gameOver && !cell.innerText) {
+                cell.innerText = currentPlayer;
+                const cellIndex = Array.from(document.querySelectorAll('.cell')).indexOf(cell);
+                gameBoard[cellIndex] = currentPlayer;
+                checkWinner();
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+
+        function resetGame() {
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.innerText = '';
+            });
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameOver = false;
+            document.getElementById('status').innerText = '';
+        }
+    </script>
+</body>
+</html>
